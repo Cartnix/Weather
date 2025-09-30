@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react"
 import { fetchData } from "../services/weatherAPI"
 
+export interface DataI{
+    city: string,
+    temp: number
+}
+
 export const useFetchData = (city: string) => {
-    const [data, setData] = useState<null | object>(null)
+    const [data, setData] = useState<null | DataI>(null)
     const [error, setError] = useState<Error | null>(null)
     const [isLoading, setLoading] = useState<boolean>(false)
 
