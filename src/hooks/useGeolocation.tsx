@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 export const useGeolocation = () => {
   const [coords, setCoords] = useState<{ lat: number; lon: number } | null>(null)
   const [error, setError] = useState<Error | null>(null)
-  const [isLoading, setLoading] = useState(false)
+  const [isLoadingGeo, setLoading] = useState(false)
 
   useEffect(() => {
     setLoading(true)
@@ -19,5 +19,5 @@ export const useGeolocation = () => {
     )
   }, [])
 
-  return { coords, error, isLoading }
+  return { coords, error, isLoadingGeo }
 }

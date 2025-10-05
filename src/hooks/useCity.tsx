@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useGeolocation } from "./useGeolocation";
 
 export default function useCity() {
-  const { coords, isLoading } = useGeolocation();
+  const { coords, isLoadingGeo } = useGeolocation();
   const [city, setCity] = useState<string | null>(null);
   const [loadingCity, setLoadingCity] = useState<boolean>(false);
   const [cityErr, setCityErr] = useState<Error | null>(null);
@@ -33,5 +33,5 @@ export default function useCity() {
     fetchCity();
   }, [coords]);
 
-  return { cityErr, isLoading: isLoading || loadingCity, city };
+  return { cityErr, isLoadingCity: isLoadingGeo || loadingCity, city };
 }

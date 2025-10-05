@@ -1,20 +1,23 @@
-import SelectField from "./components/Select"
 import useCity from "./hooks/useCity"
 import useWeather from "./hooks/useWeather"
 
 function App() {
 
-  const { city, cityErr, isLoading } = useCity()
-  useWeather()
+  const { city, cityErr, isLoadingCity } = useCity()
+  const {weather, err, isloading} = useWeather()
+
+  console.log(weather)
 
   return (
     <div className="flex bg-[#b48787] h-dvh justify-center items-center flex-col gap-5">
       <h2>
-        {isLoading && "Определяем город..."}
+        {isLoadingCity && "Определяем город..."}
         {cityErr && `Произошла ошибка: ${cityErr}`}
         {city && `Погода в городе ${city}: `}
       </h2>
-      < SelectField />
+      <div>
+        
+      </div>
     </div>
   )
 }
