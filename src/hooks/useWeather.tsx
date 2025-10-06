@@ -14,7 +14,6 @@ interface dailyWeather {
   desc: string;
   icon: string;
   wind: number;
-
 }
 
 export default function useWeather() {
