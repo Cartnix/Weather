@@ -2,7 +2,7 @@ import type { CardI } from "./WeatherCard";
 
 export default function WeatherMainCard({ date, temp, desc, icon, wind }: CardI) {
     return (
-        <div className="flex flex-col items-center justify-center w-full p-4 bg-white/10 backdrop-blur-md rounded-2xl shadow-lg text-white">
+        <div className="flex flex-col items-center justify-center w-full p-4 bg-[rgba(255,255,255,0.25)] backdrop-blur-2xl border border-white/30 rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.15)] text-[#222222] transition-transform duration-300 hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(0,0,0,0.2)]">
             <p className="font-semibold">{date}</p>
             <img
                 src={`https://openweathermap.org/img/wn/${icon}@2x.png`}

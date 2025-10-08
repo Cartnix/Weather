@@ -7,8 +7,8 @@ function App() {
   const { city, cityErr, isLoadingCity } = useCity()
 
   return (
-    <div className="flex bg-[#b48787] h-dvh justify-center items-center flex-col gap-5">
-      <h2 className="text-3xl font-bold text-amber-50">
+    <div className="flex bg-[#FAFAFA] h-dvh justify-center items-center flex-col gap-5">
+      <h2 className="text-3xl font-bold text-[#222222]">
         {isLoadingCity && "Определяем город..."}
         {cityErr && `Произошла ошибка: ${cityErr}`}
         {city && `Погода в городе ${city}: `}
