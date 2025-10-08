@@ -9,7 +9,7 @@ export default function WeatherWrapper() {
   if (!weather) return null;
 
   return (
-    <div className="flex flex-wrap justify-center gap-4 p-4">
+    <div className="flex flex-wrap justify-center gap-4">
       {weather.map((item, index) => (
         <WeatherCard
           key={index}

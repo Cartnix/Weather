@@ -1,4 +1,4 @@
-interface CardI {
+export interface CardI {
   date: string;
   temp: number;
   desc: string;

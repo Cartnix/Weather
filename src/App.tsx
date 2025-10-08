@@ -1,3 +1,4 @@
+import WeatherMainCard from "./components/WeatherMainCard"
 import WeatherWrapper from "./components/WeatherWrapper"
 import useCity from "./hooks/useCity"
 
@@ -12,7 +13,8 @@ function App() {
         {cityErr && `Произошла ошибка: ${cityErr}`}
         {city && `Погода в городе ${city}: `}
       </h2>
-      <div>
+      <div className="flex flex-col gap-5">
+        <WeatherMainCard />
         <WeatherWrapper />
       </div>
     </div>

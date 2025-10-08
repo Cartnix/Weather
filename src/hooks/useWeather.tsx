@@ -8,7 +8,7 @@ interface WeatherListItem {
   wind: { speed: number };
 }
 
-interface dailyWeather {
+export interface dailyWeather {
   date: string;
   temp: number;
   desc: string;
