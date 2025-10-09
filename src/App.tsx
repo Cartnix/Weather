@@ -8,7 +8,7 @@ function App() {
   const { city, cityErr, isLoadingCity } = useCity()
   useDailyWeather()
   return (
-    <div className="flex bg-[#FAFAFA] h-dvh justify-center items-center flex-col gap-5">
+    <div className="flex bg-[#FAFAFA] justify-center items-center flex-col gap-5">
       <h2 className="text-3xl font-bold text-[#222222]">
         {isLoadingCity && "Определяем город..."}
         {cityErr && `Произошла ошибка: ${cityErr}`}
