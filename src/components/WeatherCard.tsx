@@ -18,6 +18,7 @@ export default function WeatherCard({ date, temp, desc, icon, wind }: CardI) {
       <p className="text-2xl font-bold">{temp}°C</p>
       <p className="text-sm capitalize opacity-80">{desc}</p>
       <p className="text-sm mt-1">{wind} м/с</p>
+
     </div>
   );
 }

@@ -1,24 +1,20 @@
 import { useEffect, useState } from "react";
 import { useGeolocation } from "./useGeolocation";
 
-interface WeatherListItem {
+export interface WeatherListItem {
   dt_txt: string;
   main: { temp: number };
   weather: { description: string; icon: string }[];
   wind: { speed: number };
 }
 
-export interface dailyWeather {
-  date: string;
-  temp: number;
-  desc: string;
-  icon: string;
-  wind: number;
+interface WeatherAPIResponse {
+  list: WeatherListItem[];
 }
 
 export default function useWeather() {
   const { coords } = useGeolocation();
-  const [weather, setWeather] = useState<dailyWeather[] | null>(null);
+  const [weather, setWeather] = useState<WeatherListItem[] | null>(null);
   const [err, setErr] = useState<Error | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const API_KEY = import.meta.env.VITE_API_KEY;
@@ -30,22 +26,12 @@ export default function useWeather() {
       setIsLoading(true);
       try {
         const res = await fetch(
-          `https://api.openweathermap.org/data/2.5/forecast?lat=${coords.lat}&lon=${coords.lon}&appid=${API_KEY}&units=metric&lang=ru`);
+          `https://api.openweathermap.org/data/2.5/forecast?lat=${coords.lat}&lon=${coords.lon}&appid=${API_KEY}&units=metric&lang=ru`
+        );
         if (!res.ok) throw new Error("Ошибка при загрузке погоды");
-        const weatherData = await res.json();
+        const weatherData: WeatherAPIResponse = await res.json();
 
-        const daily = (weatherData.list as WeatherListItem[])
-          .filter((_, i) => i % 8 === 0)
-          .map(item => ({
-            date: item.dt_txt.split(' ')[0],
-            temp: Math.round(item.main.temp),
-            desc: item.weather[0].description,
-            icon: item.weather[0].icon,
-            wind: item.wind.speed,
-          }));
-
-        setWeather(daily);
-        console.log(weatherData);
+        setWeather(weatherData.list);
       } catch (error) {
         if (error instanceof Error) setErr(error);
         else setErr(new Error("Неизвестная ошибка"));

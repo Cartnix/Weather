@@ -1,5 +1,6 @@
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis, type TooltipProps } from "recharts";
-import useDailyWeather from "../hooks/useDailyWeather";
+import { GraphFilterWeather } from "../filters/Graph_Filter";
+import useWeather from "../hooks/useWeather";
 
 interface CustomTooltipProps extends TooltipProps<number, string> {
     payload?: {
@@ -9,17 +10,19 @@ interface CustomTooltipProps extends TooltipProps<number, string> {
 }
 
 export default function MainChart() {
-    const { dailyData, error, loading } = useDailyWeather()
+    const { weather, err, isLoading } = useWeather()
 
-    if (loading) return <p>Получаем данные...</p>
-    if (error) return <p>Произошла ошибка: {error.message}</p>
+    if (isLoading) return <p>Получаем данные...</p>
+    if (err) return <p>Произошла ошибка: {err.message}</p>
+
+    const chartData = weather ? GraphFilterWeather(weather) : []
 
     return (
         <ResponsiveContainer width="100%" height={300}>
-            <AreaChart data={dailyData ?? []}>
+            <AreaChart data={chartData.slice(1,9) ?? []}>
                 <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
                 <XAxis dataKey="date" />
-                <YAxis dataKey="temp" />
+                <YAxis domain={[-30, 30]} dataKey="temp" />
                 <Area
                     type="monotone"
                     dataKey="temp"
@@ -27,6 +30,7 @@ export default function MainChart() {
                     fill="#8884d8"
                     fillOpacity={0.2}
                     activeDot={false}
+                    baseValue={"dataMin"}
                 />
                 <Tooltip content={<CustomTooltip />} />
             </AreaChart>
