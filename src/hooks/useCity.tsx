@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
 import { useGeolocation } from "./useGeolocation";
 
-export default function useCity() {
+export default function useCity(selectedCity: string | null) {
   const { coords, isLoadingGeo } = useGeolocation();
   const [city, setCity] = useState<string | null>(null);
   const [loadingCity, setLoadingCity] = useState<boolean>(false);
   const [cityErr, setCityErr] = useState<Error | null>(null);
 
   useEffect(() => {
+    if (selectedCity) {
+      setCity(selectedCity);
+      return;
+    }
+
     if (!coords) return;
 
     const fetchCity = async () => {
@@ -18,7 +23,9 @@ export default function useCity() {
         );
         const data = await response.json();
 
-        setCity(data.address.city || data.address.town || data.address.village || null);
+        setCity(
+          data.address.city || data.address.town || data.address.village || null
+        );
       } catch (err) {
         if (err instanceof Error) {
           setCityErr(err);
@@ -31,7 +38,7 @@ export default function useCity() {
     };
 
     fetchCity();
-  }, [coords]);
+  }, [coords, selectedCity]); 
 
   return { cityErr, isLoadingCity: isLoadingGeo || loadingCity, city };
 }

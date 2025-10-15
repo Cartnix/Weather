@@ -9,13 +9,14 @@ interface CustomTooltipProps extends TooltipProps<number, string> {
     label?: string;
 }
 
-export default function MainChart() {
-    const { weather, err, isLoading } = useWeather()
+export default function MainChart({ city }: { city?: string | null }) {
+    const { weather, err, isLoading } = useWeather(city);
 
-    if (isLoading) return <p>Получаем данные...</p>
-    if (err) return <p>Произошла ошибка: {err.message}</p>
+        if (isLoading) return <p>Loading data...</p>
+        if (err) return <p>An error occurred: {err.message}</p>
+    if(!weather) return null
 
-    const chartData = weather ? GraphFilterWeather(weather) : []
+    const chartData = GraphFilterWeather(weather)
 
     return (
         <ResponsiveContainer width="100%" height={300}>
@@ -43,9 +44,9 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload, label })
     if (active && payload && payload.length) {
         return (
             <div className="bg-white/90 backdrop-blur-sm border border-gray-200 rounded-lg p-2 shadow-md">
-                <p className="text-sm text-gray-700">{`Дата: ${label}`}</p>
-                <p className="text-sm text-blue-600 font-semibold">
-                    {`Температура: ${payload[0].value}°C`}
+                    <p className="text-sm text-gray-700">{`Date: ${label}`}</p>
+                    <p className="text-sm text-blue-600 font-semibold">
+                        {`Temperature: ${payload[0].value}°C`}
                 </p>
             </div>
         );

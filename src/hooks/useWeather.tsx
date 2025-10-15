@@ -12,7 +12,7 @@ interface WeatherAPIResponse {
   list: WeatherListItem[];
 }
 
-export default function useWeather() {
+export default function useWeather(city?: string | null) {
   const { coords } = useGeolocation();
   const [weather, setWeather] = useState<WeatherListItem[] | null>(null);
   const [err, setErr] = useState<Error | null>(null);
@@ -20,28 +20,30 @@ export default function useWeather() {
   const API_KEY = import.meta.env.VITE_API_KEY;
 
   useEffect(() => {
-    if (!coords) return;
+    if (!coords && !city) return;
 
     const fetchWeather = async () => {
       setIsLoading(true);
       try {
-        const res = await fetch(
-          `https://api.openweathermap.org/data/2.5/forecast?lat=${coords.lat}&lon=${coords.lon}&appid=${API_KEY}&units=metric&lang=ru`
-        );
-        if (!res.ok) throw new Error("Ошибка при загрузке погоды");
-        const weatherData: WeatherAPIResponse = await res.json();
+        const url = city
+          ? `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric&lang=ru`
+          : `https://api.openweathermap.org/data/2.5/forecast?lat=${coords?.lat}&lon=${coords?.lon}&appid=${API_KEY}&units=metric&lang=ru`;
 
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("Can't fetch the weather");
+
+        const weatherData: WeatherAPIResponse = await res.json();
         setWeather(weatherData.list);
       } catch (error) {
         if (error instanceof Error) setErr(error);
-        else setErr(new Error("Неизвестная ошибка"));
+        else setErr(new Error("Unknown Error"));
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchWeather();
-  }, [coords, API_KEY]);
+  }, [coords, city, API_KEY]);
 
   return { weather, err, isLoading };
 }

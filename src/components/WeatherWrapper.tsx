@@ -2,10 +2,10 @@ import { CardFilterWeather } from "../filters/Card_Filter";
 import useWeather from "../hooks/useWeather";
 import WeatherCard from "./WeatherCard";
 
-export default function WeatherWrapper() {
-  const { weather, err, isLoading } = useWeather();
+export default function WeatherWrapper({ city }: { city?: string | null }) {
+  const { weather, err, isLoading } = useWeather(city);
 
-  if (isLoading) return <p className="text-center">Загрузка...</p>;
+  if (isLoading) return <p className="text-center">Loading...</p>;
   if (err) return <p className="text-center text-red-500">{err.message}</p>;
   if (!weather) return null;
 
